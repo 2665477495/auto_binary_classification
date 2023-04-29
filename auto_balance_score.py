@@ -4,16 +4,13 @@ from imblearn.pipeline import Pipeline
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
 
 
 def remove_prefix_from_params(params, prefix="classifier__"):
     return {key.replace(prefix, ""): value for key, value in params.items()}
 
-from sklearn.model_selection import StratifiedKFold
-from collections import Counter
 
-def k_score(data, params_of_model):
+def k_score(data, model):
     # 拆分
     X = data.iloc[:, :-1]
     y = data.iloc[:, -1]
@@ -23,7 +20,7 @@ def k_score(data, params_of_model):
         [
             ("scaler", StandardScaler()),
             ("sampler", SMOTEENN()),
-            ("classifier", SVC(**remove_prefix_from_params(params_of_model))),
+            ("classifier", model),
         ]
     )
 
@@ -53,4 +50,3 @@ def k_score(data, params_of_model):
     scores = cross_val_score(pipeline, X, y, scoring='f1_macro', cv=kfold, n_jobs=-1)
 
     return np.mean(scores), np.std(scores)
-

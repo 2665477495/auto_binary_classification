@@ -12,7 +12,7 @@ data = pd.read_csv("data/data_cleaned.csv")
 # 定义SVM模型的参数
 params_of_model = {
     "classifier__kernel": ["rbf", "linear", "poly", "sigmoid"],
-    "classifier__C": list(np.arange(1, 10, 0.1)),
+    "classifier__C": list(np.arange(1, 5, 0.01)),
     "classifier__gamma": [0.01, 0.1, 1, 10],
 }
 
